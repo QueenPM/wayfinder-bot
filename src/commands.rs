@@ -121,12 +121,12 @@ pub async fn create(
 }
 
 // Scrape accessories
-#[poise::command(prefix_command, track_edits,slash_command)]
+#[poise::command(prefix_command, track_edits,slash_command, rename = "scrape-db")]
 pub async fn scrape(
     ctx: Context<'_>,
     #[description = "Page number"] page: i32,
 ) -> Result<(), Error> {
-    let result = scrape_accessory(page);
+    let result = scrape_accessory(page).await;
     match result {
         Ok(accessories) => {
             let accessories_strs: Vec<String> = accessories.iter()
