@@ -43,6 +43,7 @@ async fn main() {
             commands::help(),
             commands::get(),
             commands::create(),
+            commands::scrape()
         ],
         prefix_options: poise::PrefixFrameworkOptions {
             prefix: Some("~".into()),
