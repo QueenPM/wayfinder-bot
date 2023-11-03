@@ -1,4 +1,4 @@
-use wayfinder_bot::db::{get_accessory, create_accessory, scrape_accessory};
+use wayfinder_bot::db::{get_accessory, create_accessory, scrape_accessory_page, scrape_all};
 
 use crate::{Context, Error};
 
@@ -121,24 +121,13 @@ pub async fn create(
 }
 
 // Scrape accessories
-#[poise::command(prefix_command, track_edits,slash_command, rename = "scrape-db")]
+#[poise::command(prefix_command, track_edits,slash_command)]
 pub async fn scrape(
     ctx: Context<'_>,
-    #[description = "Page number"] page: i32,
 ) -> Result<(), Error> {
-    let result = scrape_accessory(page).await;
-    match result {
-        Ok(accessories) => {
-            let accessories_strs: Vec<String> = accessories.iter()
-                .map(|accessory| format!("Name: {}", accessory.name))
-                .collect();
-            let response = format!("Successfully scraped {} accessories.\n{}", accessories.len(), accessories_strs.join("\n"));
-            ctx.say(response).await?;
-        },
-        Err(e) => {
-            let response = format!("Error scraping accessories: {}", e);
-            ctx.say(response).await?;
-        }
-    }
+    ctx.defer().await?;
+    ctx.say("Started the scraping process...").await?;
+    scrape_all().await;
+    ctx.say("Finished the scraping process!").await?;
     Ok(())
 }

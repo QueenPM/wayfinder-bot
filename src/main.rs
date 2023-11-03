@@ -3,6 +3,7 @@
 mod commands;
 
 use poise::serenity_prelude as serenity;
+use wayfinder_bot::db::scrape_all;
 use std::{collections::HashMap, env::var, sync::Mutex, time::Duration};
 
 // Types used by all command functions
